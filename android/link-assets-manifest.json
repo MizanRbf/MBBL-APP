@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/EduAUVICWANTDots-Bold.ttf",
+      "sha1": "ab2d1cb72b713e69a237c9fec269aacc06c73337"
+    },
+    {
+      "path": "assets/fonts/EduAUVICWANTDots-Medium.ttf",
+      "sha1": "0bb7d34914c0d1487f0b65f5027934e93f0fa02b"
+    },
+    {
+      "path": "assets/fonts/EduAUVICWANTDots-Regular.ttf",
+      "sha1": "cb16e27a0cbf4c1532d4bb51661a9d965080cde8"
+    },
+    {
+      "path": "assets/fonts/EduAUVICWANTDots-SemiBold.ttf",
+      "sha1": "63f34a76db7de8e726c2c4c37907ea46bac6776a"
+    }
+  ]
+}
