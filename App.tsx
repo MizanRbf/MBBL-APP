@@ -1,26 +1,12 @@
-import React from 'react';
-import './global.css';
-import { View, Text, StyleSheet } from 'react-native';
-const App = () => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.fontBold}>Hello, Maria</Text>
-      <Text>I Love you jan</Text>
-      <Text>তুমি ঘুমাও গিয়া</Text>
-    </View>
-  );
-};
+import { NavigationContainer } from '@react-navigation/native';
+import AppNavigator from './src/navigation/AppNavigator';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  fontBold: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-});
+function App() {
+  return (
+    <NavigationContainer>
+      <AppNavigator />
+    </NavigationContainer>
+  );
+}
 
 export default App;

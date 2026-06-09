@@ -1,0 +1,17 @@
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import HomeScreen from '../screens/HomeScreen';
+import BooksScreen from '../screens/BooksScreen';
+import VideosScreen from '../screens/VideosScreen';
+
+const Stack = createNativeStackNavigator();
+
+export default function AppNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Books" component={BooksScreen} />
+      <Stack.Screen name="Videos" component={VideosScreen} />
+    </Stack.Navigator>
+  );
+}
