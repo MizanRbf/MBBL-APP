@@ -17,5 +17,4 @@ export interface Contact {
   title: string;
   image: string;
   phone: string;
-  whatsapp: string;
 }

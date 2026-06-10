@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Linking,
+} from 'react-native';
 
 export default function HomeScreen({ navigation }: any) {
   return (
@@ -30,7 +36,7 @@ export default function HomeScreen({ navigation }: any) {
         <View>
           <Text style={styles.buttonTitle}>Download The Books</Text>
 
-          <Text style={styles.buttonDescription}>Collect the pdf books</Text>
+          <Text style={styles.buttonDescription}>PDF বই সংগ্রহ করুন</Text>
         </View>
       </TouchableOpacity>
 
@@ -59,7 +65,12 @@ export default function HomeScreen({ navigation }: any) {
 
         <Text style={styles.footerSubText}>
           Developed by{' '}
-          <Text style={styles.footerBoldText}>Mizan Al Muhammadi</Text>
+          <Text
+            style={styles.footerBoldText}
+            onPress={() => Linking.openURL('https://mizanrbf.netlify.app/')}
+          >
+            Mizan Al Muhammadi
+          </Text>
         </Text>
       </View>
     </View>

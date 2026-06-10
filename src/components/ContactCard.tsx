@@ -6,7 +6,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   Linking,
+  Alert,
 } from 'react-native';
+
+import Clipboard from '@react-native-clipboard/clipboard';
 
 interface Props {
   contact: {
@@ -15,7 +18,6 @@ interface Props {
     title: string;
     image: string;
     phone: string;
-    whatsapp: string;
   };
 }
 
@@ -24,42 +26,36 @@ export default function ContactCard({ contact }: Props) {
     Linking.openURL(`tel:${contact.phone}`);
   };
 
-  const sendWhatsAppMessage = () => {
-    Linking.openURL(`https://wa.me/${contact.whatsapp}`);
+  const copyNumber = () => {
+    Clipboard.setString(contact.phone);
+    Alert.alert('Copied', 'Phone number copied to clipboard');
   };
 
   return (
     <View style={styles.card}>
       {/* Image */}
       <Image
-        source={
-          // contact.image
-          //   ? { uri: contact.image }
-          //   :
-          require('../../assets/images/contactDefaultImage.webp')
-        }
+        source={require('../../assets/images/contactDefaultImage.webp')}
         style={styles.image}
       />
 
       <View style={styles.content}>
         <Text style={styles.title}>{contact.name}</Text>
         <Text style={styles.subtitle}>{contact.title}</Text>
-        <Text style={styles.subtitle}>{contact.phone}</Text>
 
-        <View style={styles.buttonRow}>
-          {/* Phone */}
-          <TouchableOpacity style={styles.button} onPress={callContact}>
-            <Text style={styles.buttonText}>📞 Call</Text>
-          </TouchableOpacity>
+        {/* Number row + copy icon */}
+        <View style={styles.numberRow}>
+          <Text style={styles.subtitle}>{contact.phone}</Text>
 
-          {/* WhatsApp */}
-          <TouchableOpacity
-            style={[styles.button, styles.whatsapp]}
-            onPress={sendWhatsAppMessage}
-          >
-            <Text style={styles.buttonText}>💬 WhatsApp</Text>
+          <TouchableOpacity onPress={copyNumber} style={styles.copyBtn}>
+            <Text style={styles.copyText}>⧉ Copy</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Call button */}
+        <TouchableOpacity style={styles.button} onPress={callContact}>
+          <Text style={styles.buttonText}>📞 Immediate Call</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -70,7 +66,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     marginBottom: 15,
-    overflow: 'hidden',
     elevation: 4,
     flexDirection: 'row',
     padding: 10,
@@ -92,23 +87,35 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 14,
     color: 'gray',
-    marginBottom: 8,
   },
-  buttonRow: {
+
+  numberRow: {
     flexDirection: 'row',
-    gap: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 6,
   },
+
+  copyBtn: {
+    padding: 6,
+  },
+
+  copyText: {
+    fontSize: 16,
+    color: 'gray',
+  },
+
   button: {
-    backgroundColor: '#0D530E',
+    backgroundColor: '#48A111',
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 8,
+    marginTop: 8,
   },
-  whatsapp: {
-    backgroundColor: '#25D366',
-  },
+
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });

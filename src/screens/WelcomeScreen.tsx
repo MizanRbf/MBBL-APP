@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 
 export default function WelcomeScreen({ navigation }: any) {
   return (
@@ -35,7 +42,12 @@ export default function WelcomeScreen({ navigation }: any) {
 
         <Text style={styles.footerSubText}>
           Developed by{' '}
-          <Text style={styles.footerBoldText}>Mizan Al Muhammadi</Text>
+          <Text
+            style={styles.footerBoldText}
+            onPress={() => Linking.openURL('https://mizanrbf.netlify.app/')}
+          >
+            Mizan Al Muhammadi
+          </Text>
         </Text>
       </View>
     </View>
