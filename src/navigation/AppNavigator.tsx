@@ -19,11 +19,7 @@ export default function AppNavigator() {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Books" component={BooksScreen} />
       <Stack.Screen name="Videos" component={VideosScreen} />
-      <Stack.Screen
-        name="RU Arabic Contact"
-        component={ArabicScreen}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="Contact" component={ArabicScreen} />
     </Stack.Navigator>
   );
 }

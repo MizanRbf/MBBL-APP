@@ -12,6 +12,8 @@ interface Props {
   contact: {
     id: number;
     name: string;
+    title: string;
+    image: string;
     phone: string;
     whatsapp: string;
   };
@@ -28,16 +30,20 @@ export default function ContactCard({ contact }: Props) {
 
   return (
     <View style={styles.card}>
-      {/* Avatar (optional default image) */}
+      {/* Image */}
       <Image
-        source={{
-          uri: 'https://i.ibb.co/2nzw2kV/user.png',
-        }}
+        source={
+          // contact.image
+          //   ? { uri: contact.image }
+          //   :
+          require('../../assets/images/contactDefaultImage.webp')
+        }
         style={styles.image}
       />
 
       <View style={styles.content}>
         <Text style={styles.title}>{contact.name}</Text>
+        <Text style={styles.subtitle}>{contact.title}</Text>
         <Text style={styles.subtitle}>{contact.phone}</Text>
 
         <View style={styles.buttonRow}>
@@ -45,6 +51,7 @@ export default function ContactCard({ contact }: Props) {
           <TouchableOpacity style={styles.button} onPress={callContact}>
             <Text style={styles.buttonText}>📞 Call</Text>
           </TouchableOpacity>
+
           {/* WhatsApp */}
           <TouchableOpacity
             style={[styles.button, styles.whatsapp]}

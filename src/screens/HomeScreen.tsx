@@ -38,7 +38,7 @@ export default function HomeScreen({ navigation }: any) {
       <TouchableOpacity
         activeOpacity={0.8}
         style={styles.arabicButton}
-        onPress={() => navigation.navigate('RU Arabic Contact')}
+        onPress={() => navigation.navigate('Contact')}
       >
         <Text style={styles.icon}>🏛️</Text>
 

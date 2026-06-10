@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 
-import { books } from '../data/books';
-import BookCard from '../components/BookCard';
+import { contacts } from '../data/contact';
+import ContactCard from '../components/ContactCard';
 
-export default function BooksScreen() {
+export default function ContactsScreen() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={books}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => <BookCard book={item} />}
+        data={contacts}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }) => <ContactCard contact={item} />}
         contentContainerStyle={styles.listContainer}
       />
     </View>

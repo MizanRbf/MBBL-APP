@@ -14,6 +14,8 @@ export interface Video {
 export interface Contact {
   id: number;
   name: string;
+  title: string;
+  image: string;
   phone: string;
   whatsapp: string;
 }
