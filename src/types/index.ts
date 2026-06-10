@@ -10,3 +10,10 @@ export interface Video {
   title: string;
   videoUrl: string;
 }
+
+export interface Contact {
+  id: number;
+  name: string;
+  phone: string;
+  whatsapp: string;
+}
