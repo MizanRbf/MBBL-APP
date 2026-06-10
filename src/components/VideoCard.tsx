@@ -2,7 +2,6 @@ import React from 'react';
 import {
   View,
   Text,
-  Image,
   TouchableOpacity,
   StyleSheet,
   Linking,
@@ -12,7 +11,6 @@ interface Props {
   video: {
     id: string;
     title: string;
-    thumbnail: string;
     videoUrl: string;
   };
 }
@@ -28,8 +26,6 @@ export default function VideoCard({ video }: Props) {
       onPress={openVideo}
       activeOpacity={0.8}
     >
-      <Image source={{ uri: video.thumbnail }} style={styles.thumbnail} />
-
       <View style={styles.content}>
         <Text style={styles.title}>{video.title}</Text>
 
@@ -47,10 +43,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     elevation: 4,
   },
-  thumbnail: {
-    width: '100%',
-    height: 200,
-  },
   content: {
     padding: 12,
   },
@@ -60,7 +52,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   buttonText: {
-    color: '#dc2626',
+    color: '#0D530E',
     fontWeight: 'bold',
+    textAlign: 'center',
+    borderWidth: 1,
+    borderColor: '#0D530E',
+    padding: 8,
+    borderRadius: 4,
   },
 });

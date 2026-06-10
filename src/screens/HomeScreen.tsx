@@ -1,24 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function HomeScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        {/* Logo */}
-        <View style={styles.logoContainer}>
-          <Image
-            source={require('../../assets/logo.png')}
-            style={styles.logo}
-            resizeMode="contain"
-          />
-          <Text style={styles.appName}>Mizan's Brain Boost Lab</Text>
-        </View>
-
-        <Text style={styles.subtitle}>Learn • Practice • Grow</Text>
-      </View>
-
       {/* Books Button */}
       <TouchableOpacity
         activeOpacity={0.8}
@@ -28,7 +13,7 @@ export default function HomeScreen({ navigation }: any) {
         <Text style={styles.icon}>📚</Text>
 
         <View>
-          <Text style={styles.buttonTitle}>বই ডাউনলোড করুন</Text>
+          <Text style={styles.buttonTitle}>Download The Papers</Text>
 
           <Text style={styles.buttonDescription}>PDF বই ও শীট সংগ্রহ করুন</Text>
         </View>
@@ -43,9 +28,9 @@ export default function HomeScreen({ navigation }: any) {
         <Text style={styles.icon}>🎥</Text>
 
         <View>
-          <Text style={styles.buttonTitle}>ভিডিও দেখুন</Text>
+          <Text style={styles.buttonTitle}>Watch The Classes</Text>
 
-          <Text style={styles.buttonDescription}>শিক্ষামূলক ভিডিও দেখুন</Text>
+          <Text style={styles.buttonDescription}>ভিডিও ক্লাস দেখুন</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -53,22 +38,6 @@ export default function HomeScreen({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logo: {
-    width: 50,
-    height: 50,
-  },
-
-  appName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#16A34A', // Green
-    textAlign: 'center',
-  },
   container: {
     flex: 1,
     backgroundColor: '#F4F8F5',
@@ -76,22 +45,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  header: {
-    alignItems: 'center',
-    marginBottom: 50,
-    width: '100%',
-  },
-
-  subtitle: {
-    marginTop: 8,
-    fontSize: 16,
-    color: '#6B7280',
-  },
-
   bookButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#2563EB',
+    backgroundColor: '#7F2020',
     padding: 20,
     borderRadius: 16,
     marginBottom: 20,
@@ -101,7 +58,7 @@ const styles = StyleSheet.create({
   videoButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#DC2626',
+    backgroundColor: '#0D530E',
     padding: 20,
     borderRadius: 16,
     elevation: 5,
@@ -110,6 +67,7 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 36,
     marginRight: 15,
+    color: '#FFFFFF',
   },
 
   buttonTitle: {

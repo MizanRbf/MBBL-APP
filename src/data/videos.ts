@@ -1,32 +1,38 @@
 export const videos = [
   {
     id: '1',
-    title: 'HTML Full Course',
-    thumbnail: 'https://img.youtube.com/vi/qz0aGYrrlhU/maxresdefault.jpg',
-    videoUrl: 'https://www.youtube.com/watch?v=qz0aGYrrlhU',
+    title: 'আল-ফারাযদাকের কবিতা, Part-01',
+
+    videoUrl: 'https://youtu.be/fiR1DiTI7wA',
   },
   {
     id: '2',
-    title: 'CSS Crash Course',
-    thumbnail: 'https://img.youtube.com/vi/yfoY53QXEnI/maxresdefault.jpg',
-    videoUrl: 'https://www.youtube.com/watch?v=yfoY53QXEnI',
+    title: 'আল-ফারাযদাকের কবিতা, Part-02',
+
+    videoUrl: 'https://youtu.be/D5bSq80oVGc',
   },
   {
     id: '3',
-    title: 'JavaScript Tutorial',
-    thumbnail: 'https://img.youtube.com/vi/PkZNo7MFNFg/maxresdefault.jpg',
-    videoUrl: 'https://www.youtube.com/watch?v=PkZNo7MFNFg',
+    title: 'আল-ফারাযদাকের কবিতা, Part-03',
+
+    videoUrl: 'https://youtu.be/2qccADF77lc',
   },
   {
     id: '4',
-    title: 'React JS Course',
-    thumbnail: 'https://img.youtube.com/vi/bMknfKXIFA8/maxresdefault.jpg',
-    videoUrl: 'https://www.youtube.com/watch?v=bMknfKXIFA8',
+    title: 'আল-মুতানাব্বির কবিতা, Part-01',
+
+    videoUrl: 'https://youtu.be/Xt7r45t2mpg',
   },
   {
     id: '5',
-    title: 'React Native Beginner Tutorial',
-    thumbnail: 'https://img.youtube.com/vi/0-S5a0eXPoc/maxresdefault.jpg',
-    videoUrl: 'https://www.youtube.com/watch?v=0-S5a0eXPoc',
+    title: 'আল-মুতানাব্বির কবিতা, Part-02',
+
+    videoUrl: 'https://youtu.be/Q17fgsPrZVo',
+  },
+  {
+    id: '6',
+    title: 'আল-মুতানাব্বির কবিতা, Part-03',
+
+    videoUrl: 'https://youtu.be/C0yToPfkp1g',
   },
 ];
