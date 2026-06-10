@@ -18,6 +18,7 @@ export default function WelcomeScreen({ navigation }: any) {
 
         <Text style={styles.subtitle}>Learn • Practice • Grow</Text>
 
+        {/* Start Button */}
         <TouchableOpacity
           style={styles.startButton}
           onPress={() => navigation.navigate('Home')}
@@ -25,11 +26,45 @@ export default function WelcomeScreen({ navigation }: any) {
           <Text style={styles.buttonText}>Start Learning...</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Footer */}
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>
+          Mizan's Brain Boost Lab™ © 2026 All Rights Reserved
+        </Text>
+
+        <Text style={styles.footerSubText}>
+          Developed by{' '}
+          <Text style={styles.footerBoldText}>Mizan Al Muhammadi</Text>
+        </Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  footer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+
+  footerText: {
+    fontSize: 14,
+    color: '#6B7280',
+  },
+
+  footerSubText: {
+    fontSize: 12,
+    color: '#9CA3AF',
+    marginTop: 4,
+  },
+  footerBoldText: {
+    fontWeight: 'bold',
+    color: '#48A111',
+  },
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
