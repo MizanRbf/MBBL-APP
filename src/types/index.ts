@@ -1,3 +1,5 @@
+import { ImageSourcePropType } from 'react-native';
+
 export interface Book {
   id: string;
   title: string;
@@ -15,6 +17,6 @@ export interface Contact {
   id: number;
   name: string;
   title: string;
-  image: string;
+  image: ImageSourcePropType;
   phone: string;
 }

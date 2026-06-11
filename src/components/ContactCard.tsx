@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Linking,
   Alert,
+  ImageSourcePropType,
 } from 'react-native';
 
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -16,7 +17,7 @@ interface Props {
     id: number;
     name: string;
     title: string;
-    image: string;
+    image: ImageSourcePropType;
     phone: string;
   };
 }
@@ -34,11 +35,8 @@ export default function ContactCard({ contact }: Props) {
   return (
     <View style={styles.card}>
       {/* Image */}
-      <Image
-        source={require('../../assets/images/contactDefaultImage.webp')}
-        style={styles.image}
-      />
 
+      <Image source={contact.image} style={styles.image} />
       <View style={styles.content}>
         <Text style={styles.title}>{contact.name}</Text>
         <Text style={styles.subtitle}>{contact.title}</Text>
