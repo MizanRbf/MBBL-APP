@@ -23,4 +23,12 @@ export const menuItems = [
     color: '#1591DC',
     screen: 'Contacts',
   },
+  {
+    id: 'qibla',
+    icon: '🧭',
+    title: 'Compass',
+    description: 'Find direction',
+    color: '#EB4C4C',
+    screen: 'QiblaScreen',
+  },
 ];
