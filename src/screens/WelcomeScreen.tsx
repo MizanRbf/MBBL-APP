@@ -250,7 +250,6 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 25,
     fontWeight: 'bold',
-    fontFamily: 'EduAUVICWANTDots-Bold',
     color: '#48A111',
     textAlign: 'center',
   },

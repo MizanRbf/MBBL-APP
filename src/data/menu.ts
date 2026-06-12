@@ -1,7 +1,7 @@
 export const menuItems = [
   {
     id: '1',
-    icon: '🎥',
+    icon: '🖥️',
     title: 'Watch The Classes',
     description: 'ভিডিও ক্লাস দেখুন',
     color: '#0D530E',
@@ -17,7 +17,7 @@ export const menuItems = [
   },
   {
     id: '3',
-    icon: '🏛️',
+    icon: '☎️',
     title: 'RU Arabic Contact',
     description: 'Get in touch with the Arabic Dept.',
     color: '#1E3A8A',
