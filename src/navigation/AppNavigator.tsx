@@ -7,6 +7,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import ArabicScreen from '../screens/ArabicScreen';
 import VideoTitlesScreen from '../screens/VideoTitlesScreen';
 import QiblaScreen from '../screens/CompassScreen';
+import LevelScreen from '../screens/LevelScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,11 @@ export default function AppNavigator() {
         options={{ headerShown: false }}
         name="QiblaScreen"
         component={QiblaScreen}
+      />
+      <Stack.Screen
+        name="LevelScreen"
+        component={LevelScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
