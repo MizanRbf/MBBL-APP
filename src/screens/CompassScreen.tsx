@@ -13,10 +13,7 @@ export default function CompassScreen() {
 
   useEffect(() => {
     startCompass();
-
-    return () => {
-      CompassHeading.stop();
-    };
+    return () => CompassHeading.stop();
   }, [startCompass]);
 
   const getDirection = (degree: number) => {
@@ -30,30 +27,52 @@ export default function CompassScreen() {
     return 'North West';
   };
 
+  const renderTicks = () => {
+    const ticks = [];
+
+    for (let i = 0; i < 360; i += 10) {
+      const isMain = i % 30 === 0;
+
+      ticks.push(
+        <View
+          key={i}
+          style={[styles.tick, { transform: [{ rotate: `${i}deg` }] }]}
+        >
+          <View style={[styles.tickLine, isMain && styles.mainTick]} />
+
+          {isMain && <Text style={styles.degreeLabel}>{i}</Text>}
+        </View>,
+      );
+    }
+
+    return ticks;
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.compassWrapper}>
-        {/* Fixed Pointer */}
+        {/* Pointer */}
         <View style={styles.pointer}>
           <Text style={styles.pointerText}>▼</Text>
         </View>
 
-        {/* Rotating Compass Ring */}
+        {/* Compass Circle */}
         <View
           style={[
             styles.compassCircle,
-            {
-              transform: [{ rotate: `${-heading}deg` }],
-            },
+            { transform: [{ rotate: `${-heading}deg` }] },
           ]}
         >
+          {renderTicks()}
+
+          {/* N E S W */}
           <Text style={styles.north}>North</Text>
           <Text style={styles.east}>East</Text>
           <Text style={styles.south}>South</Text>
           <Text style={styles.west}>West</Text>
         </View>
 
-        {/* Center Content */}
+        {/* Center */}
         <View style={styles.centerContent}>
           <Text style={styles.degreeText}>{Math.round(heading)}°</Text>
         </View>
@@ -86,7 +105,7 @@ const styles = StyleSheet.create({
 
   pointer: {
     position: 'absolute',
-    top: -10,
+    top: -29,
     zIndex: 10,
   },
 
@@ -103,9 +122,39 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#444',
     position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  tick: {
+    position: 'absolute',
+    width: 320,
+    height: 320,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+
+  tickLine: {
+    width: 2,
+    height: 8,
+    backgroundColor: '#666',
+    marginTop: 6,
+  },
+
+  mainTick: {
+    height: 14,
+    backgroundColor: '#fff',
+  },
+
+  degreeLabel: {
+    position: 'absolute',
+    top: 22,
+    fontSize: 10,
+    color: '#aaa',
   },
 
   centerContent: {
+    position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -116,8 +165,14 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 
+  headingText: {
+    marginTop: 40,
+    color: '#888',
+    fontSize: 20,
+  },
+
   directionText: {
-    fontSize: 25,
+    fontSize: 22,
     color: '#fff',
     marginTop: 30,
     fontWeight: '600',
@@ -125,45 +180,35 @@ const styles = StyleSheet.create({
 
   north: {
     position: 'absolute',
-    top: 18,
-    alignSelf: 'center',
+    top: 30,
     color: '#ff3b30',
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
   },
 
   east: {
     position: 'absolute',
-    right: 15,
-    top: '50%',
-    marginTop: -12,
+    right: 35,
+    top: '46%',
     color: '#fff',
-    fontSize: 22,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 
   south: {
     position: 'absolute',
-    bottom: 18,
-    alignSelf: 'center',
+    bottom: 30,
     color: '#fff',
-    fontSize: 22,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 
   west: {
     position: 'absolute',
-    left: 15,
-    top: '50%',
-    marginTop: -12,
+    left: 35,
+    top: '46%',
     color: '#fff',
-    fontSize: 22,
-    fontWeight: '600',
-  },
-
-  headingText: {
-    marginTop: 40,
-    color: '#888',
     fontSize: 18,
+    fontWeight: 'bold',
   },
 });
