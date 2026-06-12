@@ -209,32 +209,4 @@ export const contacts = [
     image: require('../../assets/images/rezaul.png'),
     phone: '+880.....',
   },
-  {
-    id: 31,
-    name: 'Md. Rashidul Islam',
-    title: 'Assistant Registrar',
-    image: require('../../assets/images/rased.png'),
-    phone: '+8801721716095',
-  },
-  {
-    id: 32,
-    name: 'Mst. Mursheda Khatun',
-    title: 'Section Officer',
-    image: require('../../assets/images/mursheda.png'),
-    phone: '+8801711267912',
-  },
-  {
-    id: 33,
-    name: 'Md. Farid Uddin',
-    title: 'Seminar Bearer',
-    image: require('../../assets/images/farid.png'),
-    phone: '+8801789120389',
-  },
-  {
-    id: 34,
-    name: 'Md. Bablu Mia',
-    title: 'Orderly Peon',
-    image: require('../../assets/images/babul.png'),
-    phone: '+8801917918458',
-  },
 ];

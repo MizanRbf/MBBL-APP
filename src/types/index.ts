@@ -3,6 +3,7 @@ import { ImageSourcePropType } from 'react-native';
 export interface Book {
   id: string;
   title: string;
+  writer: string;
   thumbnail: string;
   pdfUrl: string;
 }

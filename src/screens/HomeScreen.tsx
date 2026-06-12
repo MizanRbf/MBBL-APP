@@ -14,7 +14,7 @@ export default function HomeScreen({ navigation }: any) {
       <TouchableOpacity
         activeOpacity={0.8}
         style={styles.videoButton}
-        onPress={() => navigation.navigate('Videos')}
+        onPress={() => navigation.navigate('VideoTitles')}
       >
         <Text style={styles.icon}>🎥</Text>
 
@@ -44,7 +44,7 @@ export default function HomeScreen({ navigation }: any) {
       <TouchableOpacity
         activeOpacity={0.8}
         style={styles.arabicButton}
-        onPress={() => navigation.navigate('Contact')}
+        onPress={() => navigation.navigate('Contacts')}
       >
         <Text style={styles.icon}>🏛️</Text>
 

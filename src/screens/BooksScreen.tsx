@@ -11,6 +11,7 @@ export default function BooksScreen() {
         data={books}
         keyExtractor={item => item.id}
         renderItem={({ item }) => <BookCard book={item} />}
+        numColumns={2}
         contentContainerStyle={styles.listContainer}
       />
     </View>
@@ -24,5 +25,8 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     padding: 10,
+  },
+  row: {
+    justifyContent: 'space-between',
   },
 });

@@ -12,6 +12,7 @@ interface Props {
   book: {
     id: string;
     title: string;
+    writer: string;
     thumbnail: string;
     pdfUrl: string;
   };
@@ -28,9 +29,10 @@ export default function BookCard({ book }: Props) {
 
       <View style={styles.content}>
         <Text style={styles.title}>{book.title}</Text>
+        <Text style={styles.writer}>{book.writer}</Text>
 
         <TouchableOpacity style={styles.button} onPress={downloadBook}>
-          <Text style={styles.buttonText}>📥 Download PDF</Text>
+          <Text style={styles.buttonText}>📥 Download</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -39,26 +41,35 @@ export default function BookCard({ book }: Props) {
 
 const styles = StyleSheet.create({
   card: {
+    flex: 1,
     backgroundColor: '#fff',
     borderRadius: 12,
+    marginHorizontal: 5,
     marginBottom: 15,
-    overflow: 'hidden',
     elevation: 4,
   },
   image: {
     width: '100%',
-    height: 180,
+    height: 140,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
   content: {
     padding: 12,
   },
   title: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: '600',
-    marginBottom: 10,
+    marginBottom: 2,
+  },
+  writer: {
+    fontSize: 10,
+    fontWeight: '600',
+    marginBottom: 4,
+    color: 'gray',
   },
   button: {
-    backgroundColor: '#0D530E',
+    backgroundColor: '#2C3947',
     paddingVertical: 10,
     borderRadius: 8,
   },
