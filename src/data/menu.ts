@@ -24,11 +24,19 @@ export const menuItems = [
     screen: 'Contacts',
   },
   {
-    id: 'qibla',
+    id: '4',
     icon: '🧭',
     title: 'Compass',
     description: 'Find direction',
-    color: '#EB4C4C',
+    color: '#003049',
+    screen: 'QiblaScreen',
+  },
+  {
+    id: '5',
+    icon: '🌍',
+    title: 'Level Meter',
+    description: 'See the earth level',
+    color: '#306D29',
     screen: 'QiblaScreen',
   },
 ];

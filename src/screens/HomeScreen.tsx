@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { menuItems } from '../data/menu';
-import Footer from '../components/Footer';
 
 export default function HomeScreen({ navigation }: any) {
   return (
@@ -23,9 +22,6 @@ export default function HomeScreen({ navigation }: any) {
           </View>
         </TouchableOpacity>
       ))}
-
-      {/* Footer */}
-      <Footer />
     </View>
   );
 }

@@ -6,7 +6,7 @@ import VideosScreen from '../screens/VideosScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import ArabicScreen from '../screens/ArabicScreen';
 import VideoTitlesScreen from '../screens/VideoTitlesScreen';
-import QiblaScreen from '../screens/QiblaScreen';
+import QiblaScreen from '../screens/CompassScreen';
 
 const Stack = createNativeStackNavigator();
 
