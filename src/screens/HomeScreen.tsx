@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Linking,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { menuItems } from '../data/menu';
+import Footer from '../components/Footer';
 
 export default function HomeScreen({ navigation }: any) {
   return (
@@ -30,21 +25,7 @@ export default function HomeScreen({ navigation }: any) {
       ))}
 
       {/* Footer */}
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Mizan's Brain Boost Lab™ © 2026 All Rights Reserved
-        </Text>
-
-        <Text style={styles.footerSubText}>
-          Developed by{' '}
-          <Text
-            style={styles.footerBoldText}
-            onPress={() => Linking.openURL('https://mizanrbf.netlify.app/')}
-          >
-            Mizan Al Muhammadi
-          </Text>
-        </Text>
-      </View>
+      <Footer />
     </View>
   );
 }
@@ -85,31 +66,5 @@ const styles = StyleSheet.create({
     color: '#E5E7EB',
     marginTop: 4,
     fontSize: 13,
-  },
-
-  footer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-  },
-
-  footerText: {
-    fontSize: 14,
-    color: '#6B7280',
-    textAlign: 'center',
-  },
-
-  footerSubText: {
-    fontSize: 12,
-    color: '#9CA3AF',
-    marginTop: 4,
-    textAlign: 'center',
-  },
-
-  footerBoldText: {
-    fontWeight: 'bold',
-    color: '#48A111',
   },
 });

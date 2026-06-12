@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Linking,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Footer from '../components/Footer';
 
 export default function WelcomeScreen({ navigation }: any) {
   // useState
@@ -197,21 +191,7 @@ export default function WelcomeScreen({ navigation }: any) {
       </TouchableOpacity>
 
       {/* Footer */}
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Mizan's Brain Boost Lab™ © 2026 All Rights Reserved
-        </Text>
-
-        <Text style={styles.footerSubText}>
-          Developed by{' '}
-          <Text
-            style={styles.footerBoldText}
-            onPress={() => Linking.openURL('https://mizanrbf.netlify.app/')}
-          >
-            Mizan Al Muhammadi
-          </Text>
-        </Text>
-      </View>
+      <Footer />
     </LinearGradient>
   );
 }
@@ -245,26 +225,7 @@ const styles = StyleSheet.create({
     color: '#48A111',
     marginTop: 12,
   },
-  footer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-  },
-  footerText: {
-    fontSize: 14,
-    color: '#6B7280',
-  },
-  footerSubText: {
-    fontSize: 12,
-    color: '#9CA3AF',
-    marginTop: 4,
-  },
-  footerBoldText: {
-    fontWeight: 'bold',
-    color: '#48A111',
-  },
+
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
