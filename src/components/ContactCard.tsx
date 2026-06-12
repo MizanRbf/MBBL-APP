@@ -52,7 +52,7 @@ export default function ContactCard({ contact }: Props) {
 
         {/* Call button */}
         <TouchableOpacity style={styles.button} onPress={callContact}>
-          <Text style={styles.buttonText}>📞 Immediate Call</Text>
+          <Text style={styles.buttonText}>📱 Immediate Call</Text>
         </TouchableOpacity>
       </View>
     </View>

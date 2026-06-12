@@ -4,7 +4,7 @@ export const menuItems = [
     icon: '🖥️',
     title: 'Watch The Classes',
     description: 'ভিডিও ক্লাস দেখুন',
-    color: '#0D530E',
+    color: '#607456',
     screen: 'VideoTitles',
   },
   {
@@ -12,7 +12,7 @@ export const menuItems = [
     icon: '📚',
     title: 'Download The Books',
     description: 'PDF বই সংগ্রহ করুন',
-    color: '#7F2020',
+    color: '#D97A2B',
     screen: 'Books',
   },
   {
@@ -20,7 +20,7 @@ export const menuItems = [
     icon: '☎️',
     title: 'RU Arabic Contact',
     description: 'Get in touch with the Arabic Dept.',
-    color: '#1E3A8A',
+    color: '#1591DC',
     screen: 'Contacts',
   },
 ];
