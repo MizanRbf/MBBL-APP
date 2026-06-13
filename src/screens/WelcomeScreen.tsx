@@ -179,7 +179,7 @@ export default function WelcomeScreen({ navigation }: any) {
           <Text style={styles.appName}>Mizan's Brain Boost Lab</Text>
         </View>
 
-        <Text style={styles.subtitle}>Learn • Practice • Grow</Text>
+        <Text style={styles.subtitle}>All in One Application</Text>
       </View>
 
       {/* Start Button */}
@@ -249,6 +249,7 @@ const styles = StyleSheet.create({
   },
   appName: {
     fontSize: 25,
+    fontFamily: 'EduAUVICWANTDots-Regular',
     fontWeight: 'bold',
     color: '#48A111',
     textAlign: 'center',

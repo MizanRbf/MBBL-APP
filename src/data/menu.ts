@@ -12,7 +12,7 @@ export const menuItems = [
     icon: '🌍',
     title: 'Level Meter',
     description: 'See the earth level',
-    color: '#810B38',
+    color: '#162E93',
     screen: 'LevelScreen',
   },
   {
@@ -36,7 +36,7 @@ export const menuItems = [
     icon: '📚',
     title: 'Download The Books',
     description: 'PDF বই সংগ্রহ করুন',
-    color: '#D97A2B',
+    color: '#1591DC',
     screen: 'Books',
   },
   {
@@ -44,7 +44,7 @@ export const menuItems = [
     icon: '☎️',
     title: 'RU Arabic Contact',
     description: 'Get in touch with the Arabic Dept.',
-    color: '#1591DC',
+    color: '#D97A2B',
     screen: 'Contacts',
   },
 ];

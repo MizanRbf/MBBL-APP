@@ -16,6 +16,7 @@
     "@react-navigation/native-stack": "^7.17.1",
     "axios": "^1.17.0",
     "gl-matrix": "^3.4.4",
+    "lottie-react-native": "^7.3.8",
     "lucide-react-native": "^1.18.0",
     "moment": "^2.30.1",
     "moment-hijri": "^3.0.0",
@@ -25,13 +26,15 @@
     "react-native-compass-heading": "^2.0.2",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-linear-gradient": "^2.8.3",
+    "react-native-paper": "^5.15.3",
     "react-native-permissions": "^5.5.3",
     "react-native-reanimated": "^4.4.1",
     "react-native-safe-area-context": "^5.8.0",
     "react-native-screens": "^4.25.2",
     "react-native-sensors": "^7.3.6",
     "react-native-svg": "^15.15.5",
-    "react-native-worklets": "^0.9.1"
+    "react-native-vector-icons": "^10.3.0",
+    "react-native-worklets": "^0.9.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
