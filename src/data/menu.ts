@@ -12,11 +12,19 @@ export const menuItems = [
     icon: '🌍',
     title: 'Level Meter',
     description: 'See the earth level',
-    color: '#306D29',
+    color: '#810B38',
     screen: 'LevelScreen',
   },
   {
     id: '3',
+    icon: '🌦️',
+    title: 'Forecast',
+    description: 'See the weather',
+    color: '#306D29',
+    screen: 'ForecastScreen',
+  },
+  {
+    id: '4',
     icon: '🖥️',
     title: 'Watch The Classes',
     description: 'ভিডিও ক্লাস দেখুন',
@@ -24,7 +32,7 @@ export const menuItems = [
     screen: 'VideoTitles',
   },
   {
-    id: '4',
+    id: '5',
     icon: '📚',
     title: 'Download The Books',
     description: 'PDF বই সংগ্রহ করুন',
@@ -32,7 +40,7 @@ export const menuItems = [
     screen: 'Books',
   },
   {
-    id: '5',
+    id: '6',
     icon: '☎️',
     title: 'RU Arabic Contact',
     description: 'Get in touch with the Arabic Dept.',

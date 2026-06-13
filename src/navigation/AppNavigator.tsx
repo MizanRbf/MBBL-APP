@@ -8,7 +8,7 @@ import ArabicScreen from '../screens/ArabicScreen';
 import VideoTitlesScreen from '../screens/VideoTitlesScreen';
 import QiblaScreen from '../screens/CompassScreen';
 import LevelScreen from '../screens/LevelScreen';
-
+import ForecastScreen from '../screens/ForecastScreen';
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
@@ -45,6 +45,15 @@ export default function AppNavigator() {
         name="LevelScreen"
         component={LevelScreen}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ForecastScreen"
+        component={ForecastScreen}
+        options={{
+          headerStyle: { backgroundColor: '#0D0D0D' },
+          headerTintColor: '#FFF',
+          title: 'Weather Forecast',
+        }}
       />
     </Stack.Navigator>
   );
