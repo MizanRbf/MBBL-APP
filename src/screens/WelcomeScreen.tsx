@@ -187,7 +187,7 @@ export default function WelcomeScreen({ navigation }: any) {
         style={styles.startButton}
         onPress={() => navigation.navigate('Home')}
       >
-        <Text style={styles.buttonText}>Start Learning</Text>
+        <Text style={styles.buttonText}>Tap to Start</Text>
       </TouchableOpacity>
 
       {/* Footer */}
