@@ -299,8 +299,7 @@ export default function ForecastScreen() {
               </View>
 
               <View style={styles.mainIconWrapper}>
-                <Sun size={55} color="#FFA000" />
-                <CloudSun size={75} color="#FFFFFF" style={styles.cloudFront} />
+                {getWeatherIcon(weather?.weather?.[0]?.main ?? 'clouds', 75)}
               </View>
             </View>
 
@@ -377,7 +376,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     backgroundColor: '#0D0D0D',
   },
-  header: { marginTop: 20, marginBottom: 24 },
+  header: { marginTop: 80, marginBottom: 24 },
   headerSubtitle: { color: '#9CA3AF', fontSize: 18, fontWeight: '500' },
   headerTitle: {
     color: '#FFFFFF',
