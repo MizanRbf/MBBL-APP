@@ -44,7 +44,7 @@ export const menuItems = [
     icon: '☎️',
     title: 'RU Arabic Contact',
     description: 'Get in touch with the Arabic Dept.',
-    color: '#D97A2B',
+    color: '#760031',
     screen: 'Contacts',
   },
 ];

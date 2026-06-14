@@ -26,7 +26,7 @@ import {
 } from 'lucide-react-native';
 
 const API_KEY = 'b3937eec4af0e79a17d30fb04c5a8496';
-const DEFAULT_CITY = 'Dhaka'; // জিপিএস কাজ না করলে ব্যাকআপ সিটি
+const DEFAULT_CITY = 'Dhaka';
 
 interface ForecastItem {
   id: string;
@@ -37,114 +37,189 @@ interface ForecastItem {
 
 export default function ForecastScreen() {
   const [weather, setWeather] = useState<any>(null);
+  const [forecast, setForecast] = useState<ForecastItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // ডায়নামিক আজকের তারিখ জেনারেট করা (যেমন: Jun 13, 2026)
+  // ডায়নামিক আজকের তারিখ জেনারেট করা
   const getFormattedDate = () => {
-    const options: Intl.DateTimeFormatOptions = {
-      month: 'short',
-      day: '2-digit',
-      year: 'numeric',
-    };
-    return new Date().toLocaleDateString('en-US', options);
+    try {
+      const options: Intl.DateTimeFormatOptions = {
+        month: 'short',
+        day: '2-digit',
+        year: 'numeric',
+      };
+      return new Date().toLocaleDateString('en-US', options);
+    } catch (e) {
+      console.log('Date formatting error:', e);
+      return '';
+    }
   };
 
-  // ডায়নামিক আগামী ৩ দিনের নাম জেনারেট করা
-  const getUpcomingDays = (): string[] => {
+  // কারেন্ট সিস্টেম ডেটের ওপর ভিত্তি করে আগামী ৩ দিনের নাম জেনারেট করা
+  const getBackupForecast = useCallback((): ForecastItem[] => {
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const todayIndex = new Date().getDay();
     return [
-      days[(todayIndex + 1) % 7],
-      days[(todayIndex + 2) % 7],
-      days[(todayIndex + 3) % 7],
+      { id: 'b1', day: days[(todayIndex + 1) % 7], temp: 31, type: 'clouds' },
+      { id: 'b2', day: days[(todayIndex + 2) % 7], temp: 33, type: 'clear' },
+      { id: 'b3', day: days[(todayIndex + 3) % 7], temp: 29, type: 'rain' },
     ];
-  };
-
-  // শহরের নাম দিয়ে আবহাওয়া ফেচ করার ফলব্যাক ফাংশন
-  const fetchWeatherByCity = useCallback(async (city: string) => {
-    try {
-      const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`,
-      );
-      setWeather(response.data);
-    } catch (error: any) {
-      console.log('City API Error:', error?.response?.data || error.message);
-      setWeather({
-        name: city,
-        sys: { country: 'BD' },
-        main: { temp: 32, feels_like: 35, humidity: 75 },
-        wind: { speed: 2.8 },
-      });
-      setErrorMsg('API কি সার্ভারে অ্যাক্টিভ হচ্ছে... (ডেমো মোড)');
-    } finally {
-      setLoading(false);
-    }
   }, []);
 
-  // কোঅর্ডিনেট দিয়ে মেইন এপিআই কল (তাকিপুরের মতো সাব-লোকেশন ফিক্স করার লজিকসহ)
-  const fetchWeatherByCoords = useCallback(
-    async (lat: number, lon: number) => {
+  // ৫ দিনের ফোরকাস্ট লিস্ট থেকে আগামী ৩ দিনের ইউনিক ডেটা ফিল্টার করা
+  const processForecastData = useCallback(
+    (list: any[]) => {
       try {
-        // আমরা এখানে ল্যাঙ্গুয়েজ প্যারামিটার ব্যবহার করছি বড় শহরগুলোর রিজিওনাল নাম প্রায়োরিটি দেওয়ার জন্য
-        const response = await axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`,
-        );
+        if (!list || !Array.isArray(list)) return getBackupForecast();
 
-        const data = response.data;
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const todayStr = days[new Date().getDay()];
+        const uniqueDays: { [key: string]: any } = {};
 
-        // ওপেন-ওয়েদার মাঝে মাঝে ছোট এলাকার নাম দেয় (যেমন তাকিপুর) কিন্তু `sys.name` বা রিজিওনে মেইন সিটি থাকে।
-        // যদি এপিআই কোনো কারণে খুব ছোট নাম দেয়, আমরা সেটিকে সুন্দর ফরম্যাটে ফিল্টার করব।
-        if (data && data.name) {
-          // কিছু কাস্টম ম্যাপিং পিনপয়েন্ট এরর এড়ানোর জন্য (যেমন: তাকিপুর/পবা বা ধামরাই কে ঢাকা/রাজশাহী জোনে পুশ করা)
-          if (
-            data.name.toLowerCase().includes('takipur') ||
-            data.name.toLowerCase().includes('paba')
-          ) {
-            data.name = 'Rajshahi';
+        for (const item of list) {
+          if (!item || !item.dt) continue;
+
+          const date = new Date(item.dt * 1000);
+          const dayName = days[date.getDay()];
+
+          if (dayName !== todayStr && !uniqueDays[dayName]) {
+            const dtTxt = item.dt_txt || '';
+            const isNoon =
+              dtTxt.includes('12:00:00') || dtTxt.includes('15:00:00');
+
+            if (isNoon || Object.keys(uniqueDays).length < 3) {
+              uniqueDays[dayName] = {
+                id: item.dt.toString(),
+                day: dayName,
+                temp: Math.round(item.main?.temp ?? 30),
+                type: item.weather?.[0]?.main?.toLowerCase() ?? 'clouds',
+              };
+            }
           }
         }
 
-        setWeather(data);
-      } catch (error: any) {
-        console.log('Coords API error, falling back to city...', error.message);
-        fetchWeatherByCity(DEFAULT_CITY);
-      } finally {
-        setLoading(false);
+        const result = Object.values(uniqueDays);
+        return result.length > 0
+          ? (result.slice(0, 3) as ForecastItem[])
+          : getBackupForecast();
+      } catch (e) {
+        console.log('Error processing forecast:', e);
+        return getBackupForecast();
       }
     },
-    [fetchWeatherByCity],
+    [getBackupForecast],
   );
 
-  // জিপিএস দিয়ে রিয়েল-টাইম কোঅর্ডিনেট নেওয়া
+  // মেইন ওয়েদার ও ফোরকাস্ট ফেচ করার নিরাপদ ফাংশন
+  const fetchWeatherData = useCallback(
+    async (urlWeather: string, urlForecast: string, cityName?: string) => {
+      setLoading(true);
+      let finalWeather = null;
+      let finalForecast = getBackupForecast();
+
+      // ১. কারেন্ট ওয়েদার ফেচিং
+      try {
+        const response = await axios.get(urlWeather, { timeout: 8000 });
+        if (response && response.data) {
+          finalWeather = response.data;
+          if (finalWeather.name) {
+            const lowerName = finalWeather.name.toLowerCase();
+            if (lowerName.includes('takipur') || lowerName.includes('paba')) {
+              finalWeather.name = 'Rajshahi';
+            }
+          }
+        }
+      } catch (error: any) {
+        console.log('Weather API Error:', error?.message || error);
+      }
+
+      // ২. ফোরকাস্ট ফেচিং
+      try {
+        const response = await axios.get(urlForecast, { timeout: 8000 });
+        if (response && response.data && response.data.list) {
+          finalForecast = processForecastData(response.data.list);
+        }
+      } catch (error: any) {
+        console.log('Forecast API Error:', error?.message || error);
+      }
+
+      // ৩. স্টেট আপডেট এবং সেফটি চেক
+      if (finalWeather) {
+        setWeather(finalWeather);
+        setForecast(finalForecast);
+        setErrorMsg(null);
+      } else {
+        setWeather({
+          name: cityName || DEFAULT_CITY,
+          sys: { country: 'BD' },
+          main: { temp: 28, feels_like: 32, humidity: 75 },
+          wind: { speed: 3.5 },
+        });
+        setForecast(getBackupForecast());
+        setErrorMsg('লাইভ আবহাওয়া লোড করা যায়নি (অফলাইন মোড)');
+      }
+      setLoading(false);
+    },
+    [processForecastData, getBackupForecast],
+  );
+
+  const fetchWeatherByCity = useCallback(
+    (city: string) => {
+      const cleanCity = city || DEFAULT_CITY;
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cleanCity}&units=metric&appid=${API_KEY}`;
+      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cleanCity}&units=metric&appid=${API_KEY}`;
+      fetchWeatherData(weatherUrl, forecastUrl, cleanCity);
+    },
+    [fetchWeatherData],
+  );
+
+  const fetchWeatherByCoords = useCallback(
+    (lat: number, lon: number) => {
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
+      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
+      fetchWeatherData(weatherUrl, forecastUrl);
+    },
+    [fetchWeatherData],
+  );
+
+  // জিপিএস লোকেশন নেওয়া (লাল দাগ ফিক্সড)
   const getLocation = useCallback(() => {
-    Geolocation.getCurrentPosition(
-      (position: GeoPosition) => {
-        const { latitude, longitude } = position.coords;
-        fetchWeatherByCoords(latitude, longitude);
-      },
-      (error: GeoError) => {
-        console.log(
-          'GPS Location Issue, falling back to default city:',
-          error.message,
-        );
-        fetchWeatherByCity(DEFAULT_CITY);
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-    );
+    try {
+      Geolocation.getCurrentPosition(
+        (position: GeoPosition) => {
+          if (position && position.coords) {
+            fetchWeatherByCoords(
+              position.coords.latitude,
+              position.coords.longitude,
+            );
+          } else {
+            fetchWeatherByCity(DEFAULT_CITY);
+          }
+        },
+        (error: GeoError) => {
+          console.log('GPS Location Error:', error.message);
+          fetchWeatherByCity(DEFAULT_CITY);
+        },
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 30000 },
+      );
+    } catch (err: any) {
+      console.log('Geolocation runtime error:', err);
+      fetchWeatherByCity(DEFAULT_CITY);
+    }
   }, [fetchWeatherByCoords, fetchWeatherByCity]);
 
-  // লোকেশন পারমিশন হ্যান্ডলার
+  // পারমিশন হ্যান্ডলার (লাল দাগ ফিক্সড)
   const requestLocationPermission = useCallback(async () => {
-    if (Platform.OS === 'ios') {
-      const auth = await Geolocation.requestAuthorization('whenInUse');
-      if (auth === 'granted') {
-        getLocation();
+    try {
+      if (Platform.OS === 'ios') {
+        const auth = await Geolocation.requestAuthorization('whenInUse');
+        if (auth === 'granted') {
+          getLocation();
+        } else {
+          fetchWeatherByCity(DEFAULT_CITY);
+        }
       } else {
-        fetchWeatherByCity(DEFAULT_CITY);
-      }
-    } else {
-      try {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         );
@@ -153,27 +228,34 @@ export default function ForecastScreen() {
         } else {
           fetchWeatherByCity(DEFAULT_CITY);
         }
-      } catch (err) {
-        console.warn(err);
-        fetchWeatherByCity(DEFAULT_CITY);
       }
+    } catch (err: any) {
+      console.log('Permission request catch error:', err);
+      fetchWeatherByCity(DEFAULT_CITY);
     }
   }, [getLocation, fetchWeatherByCity]);
 
   useEffect(() => {
-    requestLocationPermission();
+    let isMounted = true;
+    if (isMounted) {
+      requestLocationPermission();
+    }
+    return () => {
+      isMounted = false;
+    };
   }, [requestLocationPermission]);
 
+  // আইকন রেন্ডারিং
   const getWeatherIcon = (type: string, size = 32) => {
-    switch (type) {
-      case 'sunny':
-        return <Sun size={size} color="#FFB300" />;
-      case 'lightning':
-        return <CloudLightning size={size} color="#FFD54F" />;
-      case 'rain':
-        return <CloudRain size={size} color="#64B5F6" />;
-      default:
-        return <CloudSun size={size} color="#FFF" />;
+    const mainType = type ? type.toLowerCase() : 'clouds';
+    if (mainType.includes('clear') || mainType.includes('sunny')) {
+      return <Sun size={size} color="#FFB300" />;
+    } else if (mainType.includes('thunder') || mainType.includes('lightning')) {
+      return <CloudLightning size={size} color="#FFD54F" />;
+    } else if (mainType.includes('rain') || mainType.includes('drizzle')) {
+      return <CloudRain size={size} color="#64B5F6" />;
+    } else {
+      return <CloudSun size={size} color="#FFF" />;
     }
   };
 
@@ -182,18 +264,11 @@ export default function ForecastScreen() {
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#FFB300" />
         <Text style={{ color: '#aaa', marginTop: 12 }}>
-          আবহাওয়া তথ্য লোড হচ্ছে...
+          আবহাওয়া তথ্য লোড হচ্ছে...
         </Text>
       </View>
     );
   }
-
-  const upcomingDays = getUpcomingDays();
-  const mockForecast: ForecastItem[] = [
-    { id: '1', day: upcomingDays[0], temp: 10, type: 'rain' },
-    { id: '2', day: upcomingDays[1], temp: 22, type: 'sunny' },
-    { id: '3', day: upcomingDays[2], temp: 12, type: 'lightning' },
-  ];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -223,7 +298,6 @@ export default function ForecastScreen() {
                 <Text style={styles.degreeUnit}>°C</Text>
               </View>
 
-              {/* ফ্লেক্স রো ও নেগেティブ মার্জিন ট্রিক - ওভারল্যাপ সম্পূর্ণ ফিক্সড */}
               <View style={styles.mainIconWrapper}>
                 <Sun size={55} color="#FFA000" />
                 <CloudSun size={75} color="#FFFFFF" style={styles.cloudFront} />
@@ -233,7 +307,7 @@ export default function ForecastScreen() {
             <View style={styles.locationContainer}>
               <MapPin size={16} color="#9CA3AF" style={{ marginRight: 6 }} />
               <Text style={styles.locationText}>
-                {weather?.name}, {weather?.sys?.country}
+                {weather?.name ?? 'Dhaka'}, {weather?.sys?.country ?? 'BD'}
               </Text>
             </View>
           </View>
@@ -242,7 +316,7 @@ export default function ForecastScreen() {
           <View style={styles.infoRow}>
             <View style={styles.infoItem}>
               <Thermometer size={20} color="#9CA3AF" />
-              <Text style={styles.infoLabel}>Temp</Text>
+              <Text style={styles.infoLabel}>Feels Like</Text>
               <Text style={styles.infoValue}>
                 {Math.round(weather?.main?.feels_like ?? 0)}°
               </Text>
@@ -265,15 +339,16 @@ export default function ForecastScreen() {
 
           {/* 3-Day Forecast Section */}
           <View style={styles.forecastRow}>
-            {mockForecast.map((item: ForecastItem) => (
-              <View key={item.id} style={styles.forecastCard}>
-                <View style={styles.forecastIconWrapper}>
-                  {getWeatherIcon(item.type, 32)}
+            {Array.isArray(forecast) &&
+              forecast.map((item: ForecastItem) => (
+                <View key={item.id} style={styles.forecastCard}>
+                  <View style={styles.forecastIconWrapper}>
+                    {getWeatherIcon(item.type, 32)}
+                  </View>
+                  <Text style={styles.forecastTemp}>{item.temp}°c</Text>
+                  <Text style={styles.forecastDay}>{item.day}</Text>
                 </View>
-                <Text style={styles.forecastTemp}>{item.temp}°c</Text>
-                <Text style={styles.forecastDay}>{item.day}</Text>
-              </View>
-            ))}
+              ))}
           </View>
 
           {errorMsg && <Text style={styles.activationText}>{errorMsg}</Text>}
@@ -289,7 +364,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0D0D0D',
     padding: 1,
-    margin: -1, // মাঝখানের সাদা লাইনের স্থায়ী ফিক্স
+    margin: -1,
   },
   center: {
     flex: 1,
@@ -338,8 +413,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginLeft: 2,
   },
-
-  // রেস্পন্সিভ আইকন ওভারল্যাপ স্টাইল
   mainIconWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -350,7 +423,6 @@ const styles = StyleSheet.create({
     marginLeft: -25,
     marginTop: 15,
   },
-
   locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
