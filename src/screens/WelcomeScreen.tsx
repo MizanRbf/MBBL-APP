@@ -38,65 +38,64 @@ export default function WelcomeScreen({ navigation }: any) {
   const getBanglaHijriDate = (dateObj: Date) => {
     const banglaNumbers = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
 
-    // ইংরেজি সংখ্যাকে বাংলায় রূপান্তর করার ফাংশন
-    const toBanglaNum = (numStr: string | number) =>
-      numStr
-        .toString()
-        .split('')
-        .map(digit => banglaNumbers[parseInt(digit)] || digit)
-        .join('');
+    const toBanglaNum = (num: string | number) =>
+      num.toString().replace(/\d/g, d => banglaNumbers[+d]);
 
-    // হিজরি মাসের ইংরেজি নামের সাথে বাংলা নামের তালিকা
-    const hijriMonthsBn: { [key: string]: string } = {
+    const hijriMonthsBn: Record<string, string> = {
       muharram: 'মুহাররম',
       safar: 'সফর',
-      'rabi i': 'রবিউল আউয়াল',
-      'rabi ii': 'রবিউস সানি',
-      'jumada i': 'জুমাদাল উলা',
-      'jumada ii': 'জুমাদাস সানি',
+      'rabi al-awwal': 'রবিউল আউয়াল',
+      'rabi al-thani': 'রবিউস সানি',
+      'jumada al-awwal': 'জুমাদাল উলা',
+      'jumada al-thani': 'জুমাদাস সানি',
       rajab: 'রজব',
       shaban: 'শাবান',
       ramadan: 'রমজান',
       shawwal: 'শাওয়াল',
-      dhulqidah: 'জিলকদ',
-      dhulhijjah: 'জিলহজ', // এখানে Dhulhijjah বা Dhuʻl-Hijjah থাকলে সরাসরি "জিলহজ" হয়ে যাবে
+      'dhu al-qidah': 'জিলকদ',
+      'dhu al-hijjah': 'জিলহজ',
     };
 
-    // সিস্টেম থেকে হিজরি টেক্সট নেওয়া (যেমন: "25 Dhuʻl-Hijjah 1447 AH")
-    const rawHijri = dateObj.toLocaleDateString('en-US-u-ca-islamic-umalqura', {
+    const raw = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
-    });
+    }).format(dateObj);
 
-    const cleanHijri = rawHijri.replace(' AH', '');
-    const parts = cleanHijri.split(' ');
+    // 🔥 IMPORTANT FIX: handle comma format too
+    // Example: "Dhul-Hijjah 29, 1447 AH"
+    const cleaned = raw.replace(' AH', '').replace(',', '');
 
-    if (parts.length >= 3) {
-      const hDay = parts[0];
-      const hYear = parts[parts.length - 1];
+    const parts = cleaned.split(' ');
 
-      // মাঝের মাসের নাম থেকে স্পেশাল ক্যারেক্টার ও স্পেস মুছে ছোট হাতের অক্ষরে রূপান্তর
-      const rawMonthEn = parts.slice(1, parts.length - 1).join(' ');
-      const cleanMonthKey = rawMonthEn.toLowerCase().replace(/[^a-z0-9]/g, '');
+    // find number in array
+    const numbers = parts.filter(p => /^\d+$/.test(p));
 
-      // রবিউল আউয়াল ও সানির জন্য স্পেশাল চেক
-      let hMonthBn = '';
-      if (
-        cleanMonthKey.includes('rabii') &&
-        !cleanMonthKey.includes('rabiii')
-      ) {
-        hMonthBn = hijriMonthsBn['rabi i'];
-      } else if (cleanMonthKey.includes('rabiii')) {
-        hMonthBn = hijriMonthsBn['rabi ii'];
-      } else {
-        hMonthBn = hijriMonthsBn[cleanMonthKey] || rawMonthEn;
-      }
+    const day = numbers[0];
+    const year = numbers[numbers.length - 1];
 
-      return `${toBanglaNum(hDay)} ${hMonthBn} ${toBanglaNum(hYear)} হিজরি`;
+    const monthRaw = parts
+      .filter(p => isNaN(Number(p)))
+      .join(' ')
+      .trim();
+
+    const cleanMonth = monthRaw
+      .toLowerCase()
+      .replace(/[^a-z\s]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    let mappedMonth = cleanMonth;
+
+    if (cleanMonth.includes('hijjah')) {
+      mappedMonth = 'dhu al-hijjah';
+    } else if (cleanMonth.includes('qidah')) {
+      mappedMonth = 'dhu al-qidah';
     }
 
-    return rawHijri;
+    return `${toBanglaNum(day)} ${
+      hijriMonthsBn[mappedMonth] || monthRaw
+    }, ${toBanglaNum(year)} হিজরি`;
   };
 
   const hijriDateBn = getBanglaHijriDate(currentTime);
@@ -118,7 +117,8 @@ export default function WelcomeScreen({ navigation }: any) {
       'চৈত্র',
     ];
     const banglaNumbers = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-    const toBanglaNum = (num: number) =>
+
+    const toBanglaNum = (num: number | string) =>
       num
         .toString()
         .split('')
@@ -126,27 +126,148 @@ export default function WelcomeScreen({ navigation }: any) {
         .join('');
 
     const dayNum = dateObj.getDate();
-    const monthNum = dateObj.getMonth();
+    const monthNum = dateObj.getMonth(); // 0 = January, 1 = February, etc.
     const yearNum = dateObj.getFullYear();
 
-    let bDay = dayNum;
+    let bDay = 1;
     let bMonthIndex = 0;
     let bYear = yearNum - 593;
 
-    const transitionDays = [14, 14, 15, 14, 15, 16, 16, 16, 16, 15, 15, 14];
+    // লিপইয়ার (অধিবর্ষ) চেক করার লজিক (ফাল্গুন মাসের দিনের জন্য প্রয়োজন)
+    const isLeapYear = (year: number) => {
+      return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    };
 
+    // ১৪ এপ্রিলের আগে হলে বঙ্গাব্দ ১ বছর পিছিয়ে থাকবে
     if (monthNum < 3 || (monthNum === 3 && dayNum < 14)) {
       bYear -= 1;
     }
 
-    if (dayNum >= transitionDays[monthNum]) {
-      bMonthIndex = (monthNum + 9) % 12;
-      bDay = dayNum - transitionDays[monthNum] + 1;
-    } else {
-      bMonthIndex = (monthNum + 8) % 12;
-      const prevMonthDays = new Date(yearNum, monthNum, 0).getDate();
-      bDay =
-        prevMonthDays - transitionDays[(monthNum - 1 + 12) % 12] + dayNum + 1;
+    // মাস এবং তারিখ অনুযায়ী অফিশিয়াল ম্যাপিং (Fixed Dates)
+    switch (monthNum) {
+      case 0: // January
+        if (dayNum <= 14) {
+          {
+            bMonthIndex = 8;
+            bDay = dayNum + 17;
+          }
+        } // পৌষ
+        else {
+          bMonthIndex = 9;
+          bDay = dayNum - 14;
+        } // মাঘ
+        break;
+      case 1: // February
+        if (dayNum <= 13) {
+          bMonthIndex = 9;
+          bDay = dayNum + 17;
+        } // মাঘ
+        else {
+          bMonthIndex = 10;
+          bDay = dayNum - 13;
+        } // ফাল্গুন
+        break;
+      case 2: // March
+        // লিপইয়ার হলে ফাল্গুন ৩১ দিনে হয়, সাধারণ বছরে ৩০ দিনে
+        const springTransition = isLeapYear(yearNum) ? 14 : 15;
+        if (dayNum < springTransition) {
+          bMonthIndex = 10;
+          bDay = dayNum + (isLeapYear(yearNum) ? 17 : 16); // ফাল্গুন
+        } else {
+          bMonthIndex = 11;
+          bDay = dayNum - springTransition + 1; // চৈত্র
+        }
+        break;
+      case 3: // April
+        if (dayNum <= 13) {
+          bMonthIndex = 11;
+          bDay = dayNum + 17;
+        } // চৈত্র
+        else {
+          bMonthIndex = 0;
+          bDay = dayNum - 13;
+        } // বৈশাখ (১৪ এপ্রিল = ১ বৈশাখ)
+        break;
+      case 4: // May
+        if (dayNum <= 14) {
+          bMonthIndex = 0;
+          bDay = dayNum + 17;
+        } // বৈশাখ
+        else {
+          bMonthIndex = 1;
+          bDay = dayNum - 14;
+        } // জ্যৈষ্ঠ
+        break;
+      case 5: // June
+        if (dayNum <= 14) {
+          bMonthIndex = 1;
+          bDay = dayNum + 17;
+        } // জ্যৈষ্ঠ
+        else {
+          bMonthIndex = 2;
+          bDay = dayNum - 14;
+        } // আষাঢ় (১৫ জুন = ১ আষাঢ়)
+        break;
+      case 6: // July
+        if (dayNum <= 15) {
+          bMonthIndex = 2;
+          bDay = dayNum + 16;
+        } // আষাঢ়
+        else {
+          bMonthIndex = 3;
+          bDay = dayNum - 15;
+        } // শ্রাবণ
+        break;
+      case 7: // August
+        if (dayNum <= 15) {
+          bMonthIndex = 3;
+          bDay = dayNum + 16;
+        } // শ্রাবণ
+        else {
+          bMonthIndex = 4;
+          bDay = dayNum - 15;
+        } // ভাদ্র
+        break;
+      case 8: // September
+        if (dayNum <= 15) {
+          bMonthIndex = 4;
+          bDay = dayNum + 16;
+        } // ভাদ্র
+        else {
+          bMonthIndex = 5;
+          bDay = dayNum - 15;
+        } // আশ্বিন
+        break;
+      case 9: // October
+        if (dayNum <= 15) {
+          bMonthIndex = 5;
+          bDay = dayNum + 15;
+        } // আশ্বিন
+        else {
+          bMonthIndex = 6;
+          bDay = dayNum - 15;
+        } // কার্তিক
+        break;
+      case 10: // November
+        if (dayNum <= 14) {
+          bMonthIndex = 6;
+          bDay = dayNum + 16;
+        } // কার্তিক
+        else {
+          bMonthIndex = 7;
+          bDay = dayNum - 14;
+        } // অগ্রহায়ণ
+        break;
+      case 11: // December
+        if (dayNum <= 14) {
+          bMonthIndex = 7;
+          bDay = dayNum + 16;
+        } // অগ্রহায়ণ
+        else {
+          bMonthIndex = 8;
+          bDay = dayNum - 14;
+        } // পৌষ
+        break;
     }
 
     return `${toBanglaNum(bDay)} ${banglaMonths[bMonthIndex]}, ${toBanglaNum(
