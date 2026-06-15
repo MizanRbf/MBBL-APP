@@ -9,6 +9,7 @@ import VideoTitlesScreen from '../screens/VideoTitlesScreen';
 import QiblaScreen from '../screens/CompassScreen';
 import LevelScreen from '../screens/LevelScreen';
 import ForecastScreen from '../screens/ForecastScreen';
+import CalendarScreen from '../screens/CalenderScreen';
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
@@ -96,6 +97,13 @@ export default function AppNavigator() {
         component={ForecastScreen}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Calendar"
+        component={CalendarScreen}
+        options={{
+          title: 'Calendar',
         }}
       />
     </Stack.Navigator>

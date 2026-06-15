@@ -47,4 +47,12 @@ export const menuItems = [
     color: '#760031',
     screen: 'Contacts',
   },
+  {
+    id: '7',
+    title: 'ক্যালেন্ডার',
+    description: 'ইংরেজি, বাংলা ও হিজরি তারিখ',
+    icon: '📅',
+    color: '#1A312C',
+    screen: 'Calendar',
+  },
 ];
