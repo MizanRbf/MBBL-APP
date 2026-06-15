@@ -99,7 +99,7 @@ export default function LevelScreen() {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#000" />
 
-      {/* 🔮 মেইন মিটার সার্কেল */}
+      {/* 🔮 MainMeterCircle */}
       <View
         style={[styles.circleContainer, { borderColor: activeBorderColor }]}
       >
