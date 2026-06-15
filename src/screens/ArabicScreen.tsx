@@ -2,7 +2,7 @@ import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 
 import { contacts } from '../data/contact';
-import ContactCard from '../components/ContactCard';
+import ContactCard from '../components/ArabicScreen/ContactCard';
 
 export default function ContactsScreen() {
   return (

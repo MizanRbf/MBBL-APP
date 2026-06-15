@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 
-import VideoCard from '../components/VideoCard';
+import VideoCard from '../components/VideoScreen/VideoCard';
 
 export default function VideosScreen({ route }: any) {
   const { videos } = route.params;

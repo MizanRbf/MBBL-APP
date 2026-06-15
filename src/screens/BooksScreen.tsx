@@ -2,7 +2,7 @@ import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 
 import { books } from '../data/books';
-import BookCard from '../components/BookCard';
+import BookCard from '../components/BooksScreen/BookCard';
 
 export default function BooksScreen() {
   return (
